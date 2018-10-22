@@ -55,6 +55,18 @@ int main(int argc, const char** argv)
 		{
 			include_connected = true;
 		}
+
+		if (!strcmp(arg, "--help") || !strcmp(arg, "-h") || !strcmp(arg, "-?"))
+		{
+			// this is why printf is better
+			std::cout
+				<< "Utility for requesting immediate refresh of available Wi-Fi networks." << std::endl
+				<< "Parameters:" << std::endl
+				<< "\t-l, --list               Output the list of available networks to stdout" << std::endl
+				<< "\t-i, --include-connected  Include currently connected networks" << std::endl;
+
+			return 0;
+		}
 	}
 
 	DWORD negotiated_version = 0;
