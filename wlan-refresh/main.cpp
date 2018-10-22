@@ -58,12 +58,23 @@ int main(int argc, const char** argv)
 
 		if (!strcmp(arg, "--help") || !strcmp(arg, "-h") || !strcmp(arg, "-?"))
 		{
+		#define ERROR_PLEASE(A) "\t" # A << ": " << static_cast<int>(error_codes:: ## A)
+
 			// this is why printf is better
 			std::cout
 				<< "Utility for requesting immediate refresh of available Wi-Fi networks." << std::endl
 				<< "Parameters:" << std::endl
 				<< "\t-l, --list               Output the list of available networks to stdout" << std::endl
-				<< "\t-i, --include-connected  Include currently connected networks" << std::endl;
+				<< "\t-i, --include-connected  Include currently connected networks" << std::endl
+				<< std::endl
+				<< "Error codes:" << std::endl
+				<< "\tPositive error codes are non-critical (warnings)." << std::endl << std::endl
+				<< ERROR_PLEASE(none) << std::endl
+				<< ERROR_PLEASE(interface_scan_failed) << std::endl
+				<< ERROR_PLEASE(wlan_open_failed) << std::endl
+				<< ERROR_PLEASE(interface_enum_failed) << std::endl
+				<< ERROR_PLEASE(no_interface) << std::endl
+				<< ERROR_PLEASE(all_interface_scans_failed) << std::endl;
 
 			return 0;
 		}
