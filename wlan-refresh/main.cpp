@@ -11,13 +11,16 @@
 
 using namespace std::chrono;
 
+// above-zero codes are non-critical;
+// below-zero is critical
 enum class error_codes : int
 {
-	none                  =  0,
-	interface_scan_failed =  1, // this error is non-critical (TODO: check if scan failed on ALL interfaces)
-	wlan_open_failed      = -1,
-	interface_enum_failed = -2,
-	no_interface          = -3,
+	none                       =  0,
+	interface_scan_failed      =  1,
+	wlan_open_failed           = -1,
+	interface_enum_failed      = -2,
+	no_interface               = -3,
+	all_interface_scans_failed = -4
 };
 
 static GUID scan_guid {};
@@ -94,7 +97,8 @@ int main(int argc, const char** argv)
 		return static_cast<int>(error_codes::no_interface);
 	}
 
-	bool scan_fail = false;
+	DWORD interface_count = interface_list->dwNumberOfItems;
+	DWORD interface_scan_failures = 0;
 
 	for (size_t i = 0; i < interface_list->dwNumberOfItems; ++i)
 	{
@@ -139,7 +143,7 @@ int main(int argc, const char** argv)
 
 		if (FAILED(hr))
 		{
-			scan_fail = true;
+			++interface_scan_failures;
 		}
 		else
 		{
@@ -164,5 +168,19 @@ int main(int argc, const char** argv)
 
 	WlanCloseHandle(handle, nullptr);
 
-	return static_cast<int>(scan_fail ? error_codes::interface_scan_failed : error_codes::none);
+	if (interface_scan_failures)
+	{
+		if (interface_scan_failures == interface_count)
+		{
+			// critical error
+			return static_cast<int>(error_codes::all_interface_scans_failed);
+		}
+		else
+		{
+			// pretty much just a warning
+			return static_cast<int>(error_codes::interface_scan_failed);
+		}
+	}
+
+	return static_cast<int>(error_codes::none);
 }
