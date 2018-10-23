@@ -56,6 +56,12 @@ int main(int argc, const char** argv)
 			include_connected = true;
 		}
 
+		if (!strcmp(arg, "--version") || !strcmp(arg, "-v"))
+		{
+			std::cout << "wlan-refresh version 1.0" << std::endl;
+			return 0;
+		}
+
 		if (!strcmp(arg, "--help") || !strcmp(arg, "-h") || !strcmp(arg, "-?"))
 		{
 		#define ERROR_PLEASE(A) "\t" # A << ": " << static_cast<int>(error_codes:: ## A)
@@ -64,8 +70,9 @@ int main(int argc, const char** argv)
 			std::cout
 				<< "Utility for requesting immediate refresh of available Wi-Fi networks." << std::endl
 				<< "Parameters:" << std::endl
-				<< "\t-l, --list               Output the list of available networks to stdout" << std::endl
-				<< "\t-i, --include-connected  Include currently connected networks" << std::endl
+				<< "\t-l, --list               Output the list of available networks to stdout." << std::endl
+				<< "\t-i, --include-connected  Include currently connected networks." << std::endl
+				<< "\t-v, --version            Output version information and exit." << std::endl
 				<< std::endl
 				<< "Error codes:" << std::endl
 				<< "\tPositive error codes are non-critical (warnings)." << std::endl << std::endl
