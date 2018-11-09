@@ -94,7 +94,7 @@ int main(int argc, const char** argv)
 
 	if (FAILED(hr))
 	{
-		std::cout << "WlanOpenHandle failed with error code: " << hr << std::endl;
+		std::cerr << "WlanOpenHandle failed with error code: " << hr << std::endl;
 		return static_cast<int>(error_codes::wlan_open_failed);
 	}
 
